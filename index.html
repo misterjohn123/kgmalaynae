@@ -42,7 +42,10 @@
   img{max-width:100%; display:block;}
 
   h1,h2,h3{ font-family:var(--script); font-weight:700; margin:0; color:#1E6F9E; }
-  .eyebrow{ font-family:var(--hand); color:var(--pink-deep); letter-spacing:1px; font-size:1.1rem;}
+  h2{ font-size:clamp(1.6rem, 5.5vw, 2.4rem); line-height:1.2; }
+  h3{ font-size:clamp(1.3rem, 4.5vw, 1.8rem); line-height:1.2; }
+  .eyebrow{ font-family:var(--hand); color:var(--pink-deep); letter-spacing:1px; font-size:clamp(0.85rem, 2.6vw, 1.1rem);}
+  .eyebrow::after{ content:'🐾  🐾  🐾'; display:block; margin-top:6px; font-size:.65em; letter-spacing:10px; opacity:.55; }
 
   a{color:inherit;}
   button{ font-family:var(--body); border:none; cursor:pointer; background:none; }
@@ -59,6 +62,14 @@
   section{ position:relative; padding:110px 6vw; }
   .section-inner{ max-width:1180px; margin:0 auto; position:relative; z-index:2; }
   .center{ text-align:center; }
+
+  @media (max-width:520px){
+    section{ padding:72px 6vw; }
+    .pin-card{ padding:32px 22px; max-width:320px; }
+    .pin-box{ width:42px; height:52px; font-size:1.25rem; }
+    .pin-inputs{ gap:8px; }
+    footer{ font-size:.85rem; padding:24px; }
+  }
 
   .reveal{ opacity:0; transform:translateY(40px); transition:opacity .9s ease, transform .9s ease; }
   .reveal.in{ opacity:1; transform:translateY(0); }
@@ -78,6 +89,15 @@
   .cloud svg{ width:100%; height:100%; }
   .bird{ position:absolute; font-size:18px; opacity:.5; animation:flyacross linear infinite; }
   @keyframes flyacross{ from{ transform:translateX(-10vw) translateY(0);} to{ transform:translateX(110vw) translateY(-40px);} }
+
+  .walking-cat{ position:absolute; font-size:24px; opacity:.65; bottom:2%;
+    animation:catwalk linear infinite, catbob .45s ease-in-out infinite;
+    filter:drop-shadow(0 3px 4px rgba(140,170,210,.3));
+  }
+  @keyframes catwalk{ from{ transform:translateX(-10vw) scaleX(1);} to{ transform:translateX(110vw) scaleX(1);} }
+  @keyframes catbob{ 0%,100%{ margin-bottom:0;} 50%{ margin-bottom:5px;} }
+  .paw-print{ position:absolute; font-size:13px; opacity:.5; pointer-events:none; animation:pawFade 2.4s ease-out forwards; }
+  @keyframes pawFade{ 0%{ opacity:.55; transform:scale(1);} 100%{ opacity:0; transform:scale(.8); } }
 
   .floating-heart{ position:fixed; bottom:-40px; z-index:1; pointer-events:none; color:var(--pink-deep); opacity:.55; }
   .petal{ position:fixed; top:-30px; z-index:1; pointer-events:none; }
@@ -102,6 +122,36 @@
   .btn-hero:active{ transform:scale(.97); }
   .scroll-hint{ margin-top:56px; font-family:var(--hand); color:var(--ink-soft); font-size:1rem; opacity:.8; animation:bob 2.4s ease-in-out infinite; }
   @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+  /* ---------- hero photo, framed like a soft cloud ---------- */
+  .hero-photo-wrap{ position:relative; display:flex; justify-content:center; margin:8px auto 34px; }
+  .hero-photo-wrap::before, .hero-photo-wrap::after{
+    content:''; position:absolute; background:#fff; border-radius:50%;
+    box-shadow:0 10px 22px rgba(140,170,210,.25); opacity:.95; pointer-events:none;
+  }
+  .hero-photo-wrap::before{ width:15vw; max-width:64px; height:15vw; max-height:64px; top:-6%; left:calc(50% - 46vw/2 - 40px); }
+  .hero-photo-wrap::after{ width:10vw; max-width:44px; height:10vw; max-height:44px; bottom:-4%; right:calc(50% - 46vw/2 - 30px); }
+  .peeking-cat{
+    position:absolute; bottom:-10px; right:calc(50% - 33vw/2 - 4px); font-size:clamp(1.6rem,6vw,2.4rem);
+    transform:rotate(6deg); animation:catPeek 3.6s ease-in-out infinite; z-index:3; pointer-events:none;
+  }
+  @keyframes catPeek{ 0%,100%{ transform:rotate(6deg) translateY(0);} 50%{ transform:rotate(3deg) translateY(-4px);} }
+  .hero-photo-frame{
+    width:min(66vw, 260px); aspect-ratio:1/1; position:relative; overflow:hidden;
+    border-radius:58% 42% 53% 47% / 48% 55% 45% 52%;
+    background:linear-gradient(160deg,#ffffff,var(--lavender) 60%,var(--sky));
+    box-shadow:0 22px 48px rgba(140,170,210,.4), inset 0 0 0 7px rgba(255,255,255,.85);
+    display:flex; align-items:center; justify-content:center;
+    animation:cloudFloat 6s ease-in-out infinite;
+  }
+  @keyframes cloudFloat{ 0%,100%{ transform:translateY(0) rotate(0deg);} 50%{ transform:translateY(-9px) rotate(1deg);} }
+  .hero-photo-frame img{ width:100%; height:100%; object-fit:cover; display:none; }
+  .hero-photo-frame .photo-placeholder{
+    font-family:var(--hand); color:var(--ink-soft); font-size:clamp(.8rem,2.6vw,.95rem);
+    text-align:center; padding:14px; line-height:1.5;
+  }
+  .hero-photo-frame .photo-placeholder .ph-icon{ font-size:1.8rem; display:block; margin-bottom:4px; }
+  @media (prefers-reduced-motion: reduce){ .hero-photo-frame{ animation:none; } }
 
   /* ---------- music player ---------- */
   #music-player{
@@ -138,6 +188,37 @@
   .polaroid .cap{ position:absolute; bottom:8px; left:0; right:0; text-align:center; font-family:var(--hand); font-size:.85rem; color:var(--ink-soft); }
 
   #lightbox{ position:fixed; inset:0; z-index:2000; display:none; align-items:center; justify-content:center; background:rgba(90,70,100,.55); backdrop-filter:blur(6px); }
+
+  /* ---------- snapshot photo album (scrapbook style) ---------- */
+  #photo-album{ background:linear-gradient(180deg, rgba(255,255,255,.3), var(--cream) 55%, rgba(255,255,255,.3)); }
+  .album-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+    gap:38px 24px; padding-top:38px; max-width:880px; margin:0 auto;
+  }
+  .snap{
+    position:relative; background:#fff; padding:10px 10px 30px; border-radius:6px;
+    box-shadow:var(--shadow-soft); cursor:pointer; opacity:0;
+    transform:scale(.7) rotate(var(--rot,-2deg));
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .snap.in{ animation:snapPopIn .6s cubic-bezier(.34,1.56,.64,1) forwards; animation-delay:var(--delay,0s); }
+  @keyframes snapPopIn{
+    0%{ opacity:0; transform:scale(.6) rotate(var(--rot,-2deg)) translateY(20px); }
+    100%{ opacity:1; transform:scale(1) rotate(var(--rot,-2deg)) translateY(0); }
+  }
+  .snap:hover{ transform:rotate(0deg) scale(1.06) translateY(-8px); box-shadow:0 22px 42px rgba(150,120,180,.32); z-index:2; }
+  .snap .tape{
+    position:absolute; top:-13px; left:50%; transform:translateX(-50%) rotate(-4deg);
+    width:64px; height:24px; box-shadow:0 3px 6px rgba(0,0,0,.1); border-radius:1px;
+  }
+  .snap .snap-frame{
+    width:100%; aspect-ratio:1/1; border-radius:3px; overflow:hidden;
+    background:linear-gradient(135deg,var(--pink),var(--lavender),var(--sky));
+    display:flex; align-items:center; justify-content:center; font-size:2.2rem;
+  }
+  .snap .snap-frame img{ width:100%; height:100%; object-fit:cover; }
+  .snap .snap-cap{ position:absolute; bottom:6px; left:0; right:0; text-align:center; font-family:var(--hand); font-size:clamp(.75rem,2.2vw,.85rem); color:var(--ink-soft); }
+  @media (prefers-reduced-motion: reduce){ .snap{ opacity:1; transform:none; } .snap.in{ animation:none; } }
   #lightbox.open{ display:flex; }
   #lightbox .lb-card{ background:#fff; padding:20px 20px 40px; border-radius:8px; max-width:min(90vw,420px); box-shadow:0 30px 60px rgba(0,0,0,.3); position:relative; }
   #lightbox .lb-frame{ width:100%; aspect-ratio:1/1; border-radius:4px; background:linear-gradient(135deg,var(--pink),var(--lavender),var(--sky)); display:flex; align-items:center; justify-content:center; font-size:4rem; }
@@ -155,7 +236,7 @@
   .tl-item:nth-child(odd){ margin-left:0; text-align:right; }
   .tl-item:nth-child(even){ margin-left:54%; text-align:left; }
   .tl-card{ background:#fff; border-radius:14px; padding:20px 22px; box-shadow:var(--shadow-soft); display:inline-block; text-align:left; max-width:100%; }
-  .tl-date{ font-family:var(--hand); color:var(--pink-deep); font-size:1rem; }
+  .tl-date{ font-family:var(--hand); color:var(--pink-deep); font-size:clamp(0.85rem, 2.5vw, 1rem); }
   .tl-thumb{ width:100%; height:130px; border-radius:10px; margin:10px 0; background:linear-gradient(135deg,var(--sky),var(--lavender)); display:flex; align-items:center; justify-content:center; font-size:2rem; }
   .tl-item::after{ content:''; position:absolute; top:8px; width:14px; height:14px; border-radius:50%; background:var(--pink-deep); box-shadow:0 0 0 5px #fff, 0 0 12px rgba(255,143,177,.7); }
   .tl-item:nth-child(odd)::after{ right:-7.5%; }
@@ -187,11 +268,11 @@
   .envelope{ width:120px; cursor:pointer; text-align:center; }
   .envelope .env-icon{ font-size:3rem; transition:transform .3s ease; filter:drop-shadow(0 8px 14px rgba(150,120,180,.3)); }
   .envelope:hover .env-icon{ transform:translateY(-6px) scale(1.08) rotate(-3deg); }
-  .envelope .env-label{ font-family:var(--hand); color:var(--ink-soft); margin-top:6px; font-size:.9rem; }
+  .envelope .env-label{ font-family:var(--hand); color:var(--ink-soft); margin-top:6px; font-size:clamp(0.8rem, 2.3vw, 0.9rem); }
   #letter-modal{ position:fixed; inset:0; z-index:2000; display:none; align-items:center; justify-content:center; background:rgba(90,70,100,.55); backdrop-filter:blur(6px); }
   #letter-modal.open{ display:flex; }
-  .letter-paper{ background:var(--cream); max-width:min(90vw,460px); padding:40px 34px; border-radius:6px; box-shadow:0 30px 60px rgba(0,0,0,.3);
-    font-family:var(--hand); font-size:1.25rem; line-height:1.7; color:#2C6E8C; position:relative;
+  .letter-paper{ background:var(--cream); max-width:min(90vw,460px); padding:clamp(24px,6vw,40px) clamp(20px,5vw,34px); border-radius:6px; box-shadow:0 30px 60px rgba(0,0,0,.3);
+    font-family:var(--hand); font-size:clamp(1rem, 3.2vw, 1.25rem); line-height:1.7; color:#2C6E8C; position:relative;
     background-image:repeating-linear-gradient(transparent, transparent 37px, rgba(180,150,190,.18) 38px); }
   .letter-close{ position:absolute; top:-14px; right:-14px; background:var(--pink-deep); color:#fff; width:34px; height:34px; border-radius:50%; box-shadow:var(--shadow-soft); font-size:1.1rem; }
 
@@ -208,9 +289,9 @@
     position:relative;
   }
   .pin-icon{ font-size:2.8rem; margin-bottom:4px; }
-  .pin-eyebrow{ font-family:var(--hand); color:var(--pink-deep); font-size:1rem; margin:0; }
-  .pin-title{ font-family:var(--script); font-size:2rem; color:#1E6F9E; margin:4px 0 6px; }
-  .pin-sub{ font-family:var(--hand); color:var(--ink-soft); font-size:.95rem; margin:0 0 20px; }
+  .pin-eyebrow{ font-family:var(--hand); color:var(--pink-deep); font-size:clamp(0.85rem, 2.6vw, 1rem); margin:0; }
+  .pin-title{ font-family:var(--script); font-size:clamp(1.5rem, 6vw, 2rem); color:#1E6F9E; margin:4px 0 6px; }
+  .pin-sub{ font-family:var(--hand); color:var(--ink-soft); font-size:clamp(0.85rem, 2.5vw, 0.95rem); margin:0 0 20px; }
   .pin-inputs{ display:flex; gap:10px; justify-content:center; margin-bottom:12px; }
   .pin-box{
     width:48px; height:58px; text-align:center; font-size:1.5rem; font-family:var(--body); font-weight:600;
@@ -240,9 +321,10 @@
 
   /* ---------- special envelope ---------- */
   #special-envelope{ background:linear-gradient(180deg, var(--cream), rgba(232,217,255,.35)); }
-  .envelope-instruction{ font-family:var(--hand); color:var(--ink-soft); margin-top:6px; }
+  .envelope-instruction{ font-family:var(--hand); color:var(--ink-soft); margin-top:6px; font-size:clamp(0.85rem, 2.6vw, 1rem); }
   .envelope-stage{ display:flex; flex-direction:column; align-items:center; margin-top:34px; }
-  .big-envelope{ position:relative; width:300px; max-width:82vw; height:200px; cursor:pointer; perspective:1000px; }
+  .big-envelope{ position:relative; width:300px; max-width:82vw; height:200px; cursor:pointer; perspective:1000px; overflow:hidden; }
+  .big-envelope.open{ overflow:visible; }
   .env-body{
     position:absolute; inset:0; border-radius:8px; z-index:1;
     background:linear-gradient(160deg,#ffffff,var(--pink)); box-shadow:var(--shadow-soft); overflow:hidden;
@@ -257,8 +339,9 @@
     position:absolute; left:9%; width:82%; top:12%; min-height:150px;
     background:var(--cream); border-radius:5px; box-shadow:0 8px 24px rgba(0,0,0,.18);
     padding:20px 18px; z-index:2; text-align:left;
-    font-family:var(--hand); color:#2C6E8C; font-size:1rem; line-height:1.6;
-    transition:transform .8s cubic-bezier(.3,.8,.4,1), z-index 0s .4s; transform:translateY(0);
+    font-family:var(--hand); color:#2C6E8C; font-size:clamp(0.85rem, 2.8vw, 1rem); line-height:1.6;
+    opacity:0; pointer-events:none;
+    transition:transform .8s cubic-bezier(.3,.8,.4,1), opacity .5s ease, z-index 0s .4s; transform:translateY(0);
   }
   .env-flap{
     position:absolute; top:0; left:0; width:0; height:0;
@@ -273,7 +356,7 @@
   .big-envelope:hover .env-seal{ transform:translate(-50%,-50%) scale(1.08); }
   .big-envelope.open .env-flap{ transform:rotateX(180deg); z-index:1; }
   .big-envelope.open .env-seal{ opacity:0; transform:translate(-50%,-50%) scale(.4); }
-  .big-envelope.open .env-letter{ transform:translateY(-130px); z-index:5; transition:transform .8s cubic-bezier(.3,.8,.4,1); }
+  .big-envelope.open .env-letter{ transform:translateY(-130px); opacity:1; pointer-events:auto; z-index:5; transition:transform .8s cubic-bezier(.3,.8,.4,1), opacity .6s ease .2s; }
   #envelope-pin-modal{ position:fixed; inset:0; z-index:2000; display:none; align-items:center; justify-content:center; background:rgba(90,70,100,.55); backdrop-filter:blur(6px); padding:20px; }
   #envelope-pin-modal.open{ display:flex; }
 
@@ -374,6 +457,14 @@
     <p class="eyebrow">ကိုကို့ချစ်ဆုံးလေး အတွက်</p>
     <h1 class="hero-title">Happy National<br>Girlfriend Day ❤️</h1>
     <p class="hero-sub">ကို့ကို များကြီးချစ်ပေးလို့များကြီးပျော်ရပါတယ်ဗျ</p>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-frame" id="heroPhotoFrame">
+        <!-- ✏️ EDIT ME: put your photo's filename/URL in the src below — any size or shape works, it auto-crops to fit -->
+        <img id="heroPhoto" src="https://cdn.discordapp.com/attachments/1532430274842067116/1532679995477069864/IMG_1260.png?ex=6a6dbafa&is=6a6c697a&hm=dee106f8e12c25e1a9c6117d53c0fe6eacb2d53380729ff5c43950c5008f2a15&" alt="a photo of us">
+        <div class="photo-placeholder" id="heroPhotoPlaceholder"><span class="ph-icon">📷</span>add your photo here</div>
+      </div>
+      <span class="peeking-cat" aria-hidden="true">🐱</span>
+    </div>
     <button class="btn-hero" id="startJourney">နိုပ်ပ </button>
     <div class="scroll-hint">↓ scroll gently ↓</div>
   </div>
@@ -397,6 +488,15 @@
     <h2>ချစ်ဆုံလေး ပုံများစုစည်းမှု</h2>
   </div>
   <div class="strings-wrap" id="stringsWrap"></div>
+</section>
+
+<!-- ============ SNAPSHOT PHOTO ALBUM ============ -->
+<section id="photo-album">
+  <div class="section-inner center reveal">
+    <p class="eyebrow">our little scrapbook</p>
+    <h2>Snap Shots ✂️</h2>
+  </div>
+  <div class="album-grid" id="albumWrap"></div>
 </section>
 
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
@@ -451,7 +551,7 @@
   <div class="section-inner center reveal">
     <p class="eyebrow">ချစ်ဆုံးလေးအတွက်</p>
     <h2>စာဖတ်ရန်နိုပ်ပါ </h2>
-    <p class="envelope-instruction">ချစ်ဆုံးရေကိုမပြင်တတ်တော့လို့ စာအိပ်လေးတော့နိုပ်ကြည့်နော် မြင်ရလည်း</p>
+    <p class="envelope-instruction">Pin က ကို့အတွက်အရေးကြီးဆုံးဒုတိယရက်စွဲ </p>
     <div class="envelope-stage">
       <div id="bigEnvelope" class="big-envelope" role="button" tabindex="0" aria-label="Open the special envelope">
         <div class="env-letter" id="envLetter">
@@ -469,7 +569,7 @@
   <div class="pin-card">
     <button class="pin-modal-close" aria-label="Close">✕</button>
     <div class="pin-icon">🔒</div>
-    <h3 class="pin-title" style="font-size:1.7rem;">Enter the Code</h3>
+    <h3 class="pin-title">Enter the Code</h3>
     <p class="pin-sub">unlock the envelope</p>
     <div class="pin-inputs" id="envPinInputs">
       <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" aria-label="Digit 1">
@@ -491,8 +591,23 @@
   </div>
 </section>
 
-<footer>made with 💗 for the best person I know</footer>
+<footer>made with 💗 &amp; 🐾 for the best person I know</footer>
 
+<script>
+(function(){
+  "use strict";
+  var heroPhoto = document.getElementById('heroPhoto');
+  var placeholder = document.getElementById('heroPhotoPlaceholder');
+  function showPhoto(){ heroPhoto.style.display='block'; placeholder.style.display='none'; }
+  function showPlaceholder(){ heroPhoto.style.display='none'; placeholder.style.display='block'; }
+  if(heroPhoto.getAttribute('src')){
+    heroPhoto.addEventListener('load', showPhoto);
+    heroPhoto.addEventListener('error', showPlaceholder);
+  } else {
+    showPlaceholder();
+  }
+})();
+</script>
 <script>
 (function(){
   "use strict";
@@ -580,6 +695,33 @@
       s.style.animationDelay = (Math.random()*3)+'s';
       skyLayer.appendChild(s);
     }
+
+    // a little cat that strolls across the bottom of the page every so often
+    function spawnWalkingCat(){
+      const cat = document.createElement('div');
+      cat.className='walking-cat';
+      cat.textContent = '🐈';
+      const dur = 20+Math.random()*8;
+      cat.style.animationDuration = dur+'s, .45s';
+      cat.style.top = 'auto';
+      skyLayer.appendChild(cat);
+      let steps = 0;
+      const trail = setInterval(()=>{
+        const rect = cat.getBoundingClientRect();
+        if(rect.left > window.innerWidth || ++steps > 40){ clearInterval(trail); return; }
+        const paw = document.createElement('div');
+        paw.className='paw-print';
+        paw.textContent='🐾';
+        paw.style.left = (rect.left+8)+'px';
+        paw.style.top = (rect.top+rect.height-4)+'px';
+        paw.style.position='fixed';
+        document.body.appendChild(paw);
+        setTimeout(()=>paw.remove(), 2500);
+      }, dur*1000/40);
+      setTimeout(()=>cat.remove(), dur*1000+200);
+    }
+    spawnWalkingCat();
+    setInterval(spawnWalkingCat, 26000);
   }
 
   // floating hearts rising
@@ -748,21 +890,57 @@
   const lightbox = document.getElementById('lightbox');
   const lbFrame = document.getElementById('lbFrame');
   const lbCap = document.getElementById('lbCap');
+  let lbList = photos;
   let lbIndex = 0;
-  function openLightbox(i){
+  function openLightbox(list, i){
+    lbList = list;
     lbIndex = i;
-    lbFrame.innerHTML = frameContent(photos[i]);
-    lbCap.textContent = photos[i].cap;
+    lbFrame.innerHTML = frameContent(lbList[i]);
+    lbCap.textContent = lbList[i].cap;
     lightbox.classList.add('open');
   }
   document.querySelectorAll('.polaroid').forEach(el=>{
-    el.addEventListener('click', ()=> openLightbox(parseInt(el.dataset.idx)));
-    el.addEventListener('keypress', (e)=>{ if(e.key==='Enter') openLightbox(parseInt(el.dataset.idx)); });
+    el.addEventListener('click', ()=> openLightbox(photos, parseInt(el.dataset.idx)));
+    el.addEventListener('keypress', (e)=>{ if(e.key==='Enter') openLightbox(photos, parseInt(el.dataset.idx)); });
   });
   document.querySelector('.lb-close').addEventListener('click', ()=> lightbox.classList.remove('open'));
-  document.querySelector('.lb-prev').addEventListener('click', ()=> openLightbox((lbIndex-1+photos.length)%photos.length));
-  document.querySelector('.lb-next').addEventListener('click', ()=> openLightbox((lbIndex+1)%photos.length));
+  document.querySelector('.lb-prev').addEventListener('click', ()=> openLightbox(lbList, (lbIndex-1+lbList.length)%lbList.length));
+  document.querySelector('.lb-next').addEventListener('click', ()=> openLightbox(lbList, (lbIndex+1)%lbList.length));
   lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) lightbox.classList.remove('open'); });
+
+  /* ================================================================
+     ✏️ EDIT ME — SNAPSHOT PHOTO ALBUM
+     Same rules as the gallery above: leave "img" empty for the emoji
+     placeholder, or set it to a photo URL/filename to show a picture.
+  ================================================================ */
+  const albumPhotos = [
+    {img:'https://cdn.discordapp.com/attachments/1532430274842067116/1532681293891109016/IMG_1203.png?ex=6a6dbc30&is=6a6c6ab0&hm=c85e95b6d48a9d601b331501ebc8c0fc3d158c926207acb87262adc567449921&', emoji:'📷', cap:'snapshot one'},
+    {img:'https://cdn.discordapp.com/attachments/1532430274842067116/1532681340745547906/IMG_1111.png?ex=6a6dbc3b&is=6a6c6abb&hm=23395c2cffa0104554f9855401b8eca0863a9b1013c98bf0c9f91fd2b38d7599&', emoji:'🥤', cap:'snapshot two'},
+    {img:'https://cdn.discordapp.com/attachments/1532430274842067116/1532681396273807530/IMG_1065.png?ex=6a6dbc48&is=6a6c6ac8&hm=a5980c4a9ff9be32a267f9b032fe8ab7b51de8a0cccfc44774c4361b0b08fbd3&', emoji:'🎡', cap:'snapshot three'},
+    {img:'https://cdn.discordapp.com/attachments/1532430274842067116/1532681645407207484/IMG_1067.png?ex=6a6dbc84&is=6a6c6b04&hm=c1f7bd6c609c59782cd25fa79876b1018329bb74fcd966fa362c7cb1d22e6a2c&', emoji:'🍰', cap:'snapshot four'},
+    {img:'https://cdn.discordapp.com/attachments/1532430274842067116/1532681689589878894/IMG_1243.png?ex=6a6dbc8e&is=6a6c6b0e&hm=a350680ed80d9ef0a36cbf400b27e314fd635fa1c7597bedf1d7ef742a0e9ce2&', emoji:'🚶', cap:'snapshot five'},
+    {img:'https://cdn.discordapp.com/attachments/1532430274842067116/1532683347145396356/IMG_1095.png?ex=6a6dbe19&is=6a6c6c99&hm=b06fcb65c1b0c1fb2367c0d824158445304d7ccc837033bddac60fa75f85f2cd&', emoji:'🎈', cap:'snapshot six'},
+  ];
+  const tapeColors = ['rgba(255,214,224,.75)','rgba(191,230,255,.75)','rgba(214,239,255,.75)','rgba(232,217,255,.7)'];
+  const albumWrap = document.getElementById('albumWrap');
+  albumPhotos.forEach((p,i)=>{
+    const rot = (Math.random()*8-4).toFixed(1);
+    const snap = document.createElement('div');
+    snap.className='snap';
+    snap.style.setProperty('--rot', rot+'deg');
+    snap.style.setProperty('--delay', (i*0.12)+'s');
+    snap.tabIndex = 0;
+    snap.setAttribute('role','button');
+    snap.setAttribute('aria-label','Open photo: '+p.cap);
+    snap.innerHTML = `
+      <span class="tape" style="background:${tapeColors[i%tapeColors.length]}"></span>
+      <div class="snap-frame">${frameContent(p)}</div>
+      <div class="snap-cap">${p.cap}</div>`;
+    snap.addEventListener('click', ()=> openLightbox(albumPhotos, i));
+    snap.addEventListener('keypress', (e)=>{ if(e.key==='Enter') openLightbox(albumPhotos, i); });
+    albumWrap.appendChild(snap);
+    io.observe(snap);
+  });
 
   /* ---------------- timeline ---------------- */
   const memories = [
@@ -844,7 +1022,7 @@
   letterModal.addEventListener('click', (e)=>{ if(e.target===letterModal) letterModal.classList.remove('open'); });
 
   /* ---------------- stickers scattered across gallery + garden ---------------- */
-  const stickerEmojis = ['☁️','⭐','🐰','🐱','🐶','🌷','🎀','🦋','🌈','🥛','😊','🧸','💫'];
+  const stickerEmojis = ['🐱','🐾','😻','🐈','☁️','⭐','🎀','🦋','🌈','🥛','😊','🧸'];
   function scatterStickers(container, count){
     const field = document.createElement('div');
     field.className='sticker-field';
